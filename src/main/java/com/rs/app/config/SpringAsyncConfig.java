@@ -11,7 +11,7 @@
  *  accordance with the terms of the license agreement you entered into
  *  with Radiant Sage.
  */
-package com.rs.app;
+package com.rs.app.config;
 
 import java.util.concurrent.Executor;
 
@@ -34,7 +34,7 @@ import com.rs.app.exception.handler.AsyncExceptionHandler;
 @Configuration
 @ComponentScan(basePackages = { "com.rs.app.service", "com.rs.app.service.impl" })
 @EnableAsync
-public class AsyncConfig implements AsyncConfigurer {
+public class SpringAsyncConfig implements AsyncConfigurer {
 	/*
 	 * @Async has two limitations: 
 	 * it must be applied to public methods only

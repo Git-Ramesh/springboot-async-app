@@ -15,7 +15,7 @@ package com.rs.app.service;
 
 import java.util.concurrent.CompletableFuture;
 
-import com.rs.model.User;
+import com.rs.app.model.User;
 
 /**
  * @author Ramesh
@@ -28,6 +28,8 @@ public interface UserService {
 	User getUserById(long id) throws Exception;
 
 	String printAuthor(boolean hasError);
-	
+
 	String printCompany(boolean hasError);
+
+	CompletableFuture<User> saveUser(User user, boolean hasError);
 }

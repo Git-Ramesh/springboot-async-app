@@ -17,6 +17,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -24,11 +25,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import com.rs.app.exception.handler.RestResponseErrorHandler;
+import com.rs.app.model.User;
+import com.rs.app.repo.UserRepo;
 import com.rs.app.service.UserService;
-import com.rs.model.User;
 
 /**
  * @author Ramesh
@@ -40,12 +44,16 @@ public class UserServiceImpl implements UserService {
 	private static final String GET_USER_URI = "http://127.0.01:4014/user/sync/%s";
 	private static final String APPLICATION_JSON = "application/json";
 	private RestTemplate restTemplate;
+	@Autowired
+	private UserRepo userRepo;
 
 	public UserServiceImpl(RestTemplateBuilder restTemplateBuilder, RestResponseErrorHandler restResponseErrorHandler) {
 		this.restTemplate = restTemplateBuilder.build();
 		this.restTemplate.setErrorHandler(restResponseErrorHandler);
 	}
 
+	
+	
 	@Override
 	@Async
 	public CompletableFuture<User> getUser(long id) {
@@ -113,6 +121,17 @@ public class UserServiceImpl implements UserService {
 			throw new RuntimeException("Failed to get company!");
 		}
 		return "RadiantSage";
+	}
+
+
+
+	@Override
+	@Async
+	@Transactional(propagation = Propagation.REQUIRED)
+	public CompletableFuture<User> saveUser(User user, boolean hasError) {
+		System.out.println("saveUser: Thread? " + Thread.currentThread());
+		User savedUser  = this.userRepo.save(user);
+		return CompletableFuture.completedFuture(savedUser);
 	}
 	
 }

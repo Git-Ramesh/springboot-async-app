@@ -9,13 +9,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import com.rs.app.AsyncConfig;
 import com.rs.app.SpringbootAsyncAppApplication;
+import com.rs.app.config.SpringAsyncConfig;
 import com.rs.app.service.UserService;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = { SpringbootAsyncAppApplication.class,
-		AsyncConfig.class }, loader = AnnotationConfigContextLoader.class)
+		SpringAsyncConfig.class }, loader = AnnotationConfigContextLoader.class)
 //@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class UserServiceTests {
 	@Autowired
